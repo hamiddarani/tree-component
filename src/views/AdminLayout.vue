@@ -1,19 +1,15 @@
 <template>
   <div>
-    <p>
-        admin layout
-    </p>
+    <p>admin layout</p>
 
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name : "AdminLayout"
-}
+  name: "AdminLayout",
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
