@@ -3,27 +3,51 @@ import { createLocalVue, mount } from "@vue/test-utils";
 import BootstrapVue from "bootstrap-vue";
 import Vuex from "vuex";
 import flushPromises from "flush-promises";
+import axios from "axios";
 
-jest.mock("axios", () => ({
-  get() {
-    return Promise.resolve({
-      data: [
-        {
-          userId: 1,
-          id: 1,
-          title: "aaa",
-          body: "bbb",
-        },
-        {
-          userId: 1,
-          id: 2,
-          title: "qui est esse",
-          body: "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
-        },
-      ],
-    });
-  },
-}));
+
+// jest.mock("axios", () => ({
+//   get() {
+//     return Promise.resolve({
+//       data: [
+//         {
+//           userId: 1,
+//           id: 1,
+//           title: "aaa",
+//           body: "bbb",
+//         },
+//         {
+//           userId: 1,
+//           id: 2,
+//           title: "qui est esse",
+//           body: "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
+//         },
+//       ],
+//     });
+//   },
+// }));
+
+jest.mock("axios");
+
+axios.get.mockResolvedValue({
+  data: [
+    {
+      userId: 1,
+      id: 1,
+      title: "aaa",
+      body: "bbb",
+    },
+    {
+      userId: 1,
+      id: 2,
+      title: "qui est esse",
+      body: "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
+    },
+  ],
+});
+
+
+
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -49,22 +73,10 @@ describe("test crud oprations for simple table with vuex", () => {
     wrapper.vm.getData();
     await flushPromises();
     expect(store.state.posts.length).toBe(2);
-    // expect(spy).toBeCalled();
   });
 
   test("reset form data", async () => {
-    // const store = new Vuex.Store({
-    //   state: {
-    //     posts: [],
-    //   },
-    //   mutations: {
-    //     GET_POSTS: jest.fn(),
-    //   },
-    // });
-    // const wrapper = mount(SimpleTable, {
-    //   store,
-    //   localVue,
-    // });
+    
     wrapper.vm.title = "we";
     wrapper.vm.body = "are";
     const button = wrapper.find("#reset");
@@ -75,9 +87,6 @@ describe("test crud oprations for simple table with vuex", () => {
   });
 
   test("edit form data", async () => {
-    
-    
-
     wrapper.vm.handleShowEditModal(store.state.posts[0]);
     expect(wrapper.vm.isEdited).toBeTruthy();
     expect(wrapper.vm.title).toBe("aaa");

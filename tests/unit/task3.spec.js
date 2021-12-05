@@ -1,6 +1,7 @@
 import Task3 from "@/components/Task3.vue";
 import { createLocalVue, mount } from "@vue/test-utils";
 import BootstrapVue from "bootstrap-vue";
+import App from '@/App.vue'
 
 describe("recursive component test", () => {
   const localVue = createLocalVue();
@@ -30,8 +31,10 @@ describe("recursive component test", () => {
   });
 
   test("checked", () => {
-    const checked = wrapper.vm.checked(wrapper.props().simpleData[0]);
+    const checked = wrapper.vm.checked(wrapper.vm.$props.simpleData[0]);
     expect(checked).toBeTruthy();
+    const checked2 = wrapper.vm.checked(wrapper.vm.$props.simpleData[4]);
+    expect(checked2).toBeFalsy();
   });
 
   test("unique array func", () => {
@@ -165,4 +168,28 @@ describe("recursive component test", () => {
     });
     expect(isOnlyOneChildIndeterminateTrue).toBeFalsy();
   });
+
+  test("change checkbox" , async() => {
+    const wrapper = mount(App , {
+      localVue
+    });
+    await wrapper.setData({
+      simpleData : [
+        { id: 1, name: "laptop", parentId: null },
+        { id: 2, name: "mobile", parentId: null },
+        { id: 21, name: "samsung", parentId: 1 },
+        { id: 22, name: "lenovo", parentId: 1 },
+        { id: 23, name: "lenovo", parentId: 21 },
+        { id: 24, name: "apple", parentId: 2 },
+      ]
+    })
+    await wrapper.find("#child-1").trigger('change');
+    expect(wrapper.vm.selected.ids).toEqual(expect.arrayContaining([1 , 21 , 22 , 23]))
+    await wrapper.find("#child-1").trigger('change');
+    expect(wrapper.vm.selected.ids).toEqual([])
+    await wrapper.find("#child-24").trigger('change');
+    expect(wrapper.vm.selected.ids).toEqual(expect.arrayContaining([2 , 24]))
+    await wrapper.find("#child-22").trigger('change')
+    expect(wrapper.vm.selected.ids).toEqual(expect.arrayContaining([22]))
+  })
 });

@@ -1,19 +1,20 @@
 <template>
   <div class="container mt-4">
-      <SimpleTable />
+      <!-- <SimpleTable /> -->
+      {{selected.ids}}
+      <task-3  :simple-data="simpleData" v-model="selected"/>
   </div>
 </template>
 
 <script>
-import Task3 from "@/components/Task3";
-import MaterialInput from "@/components/MaterialInput";
-import Counter from "./components/Counter.vue";
 import axios from "axios";
 import SimpleTable from './components/SimpleTable.vue';
+import Task3 from './components/Task3.vue';
 export default {
   name: "App",
   components: {
     SimpleTable,
+    Task3,
   },
   data() {
     return {

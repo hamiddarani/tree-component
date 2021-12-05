@@ -6,6 +6,7 @@
           :checked="checked(child)"
           :indeterminate="intederminateCondition(child)"
           @change="change(child)"
+          :id=" `child-${child.id}` "
         >
           {{ child.id }}
         </b-form-checkbox>
