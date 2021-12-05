@@ -67,6 +67,11 @@ describe("test crud oprations for simple table with vuex", () => {
   const wrapper = mount(SimpleTable, {
     store,
     localVue,
+    // computed : {
+    //   posts : () => {
+    //     return [{id :1} , {id :2}]
+    //   }
+    // }
   });
   test("test get data", async () => {
     // const spy = jest.spyOn(wrapper.vm, "getData");

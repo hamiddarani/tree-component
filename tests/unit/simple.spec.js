@@ -39,6 +39,6 @@ test("delete Item with mock store" , () => {
             $store : mockStore
         }
     })
-    wrapper.vm.deleteItem();
+    wrapper.vm.deleteItem(1);
     expect(mockStore.commit).toHaveBeenCalledWith("DELETE_POST" , 1)
 })
